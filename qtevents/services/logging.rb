@@ -1,27 +1,42 @@
+require 'colorize'
+
 # Logging functionality
 class QTLog
   def initialize
   end
 
-  def log(level, message)
-    logmsg = "[#{Time.now}] #{level} > #{message}"
-    self.writetolog(logmsg)
+  def log(app, level, msg)
+    strmsg = msg.to_s
+    strmsg = {
+        :warn  => strmsg.colorize(:yellow),
+        :error => strmsg.colorize(:red),
+        :debug => strmsg.colorize(:green),
+      }[level] || strmsg.colorize(:cyan)
+
+    logmsg = "[#{Time.now}] [#{app}] #{level} > #{strmsg}"
+    self.write_to_syslog(logmsg)
     puts logmsg
   end
 
-  def info(message)
-    self.log("info", message)
+  def info(app, msg)
+    self.log(app, :info, msg)
   end
 
-  def debug(message)
-    self.log("debug", message)
+  def debug(app, msg)
+    self.log(app, :debug, msg)
   end
 
-  def warning(message)
-    self.log("warning", message)
+  def warning(app, msg)
+    self.log(app, :warn, msg)
   end
 
-  def error(message)
-    self.log("error", message)
+  def error(app, msg)
+    self.log(app, :error, msg)
+  end
+
+  def write_to_syslog(msg)
+    File.open("logs/log_#{Time.now.strftime('%F')}.log", 'a') { |file|
+      file.puts msg
+    }
   end
 end

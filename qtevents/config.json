@@ -1,0 +1,10 @@
+{
+  "qtevents" : {
+    "logging" : true,
+    "database" : {
+      "username" : "root",
+      "password" : "root",
+      "dbname" : "qt"
+    }
+  }
+}
