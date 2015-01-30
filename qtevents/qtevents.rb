@@ -1,11 +1,13 @@
-load "services/logging.rb"
-load "utils/config.rb"
+load "core/qt.rb"
 
 module QTEvents
-  @@qtlog = QTLog.new
-  @@config = QTConfig.new
+  @@core = QT.new
+
   def self.run
-    @@config.readconfig
+    @@core.welcome
+    @@core.getconfig
+    @@core.dbconnect
+    @@core.close
   end
 end
 

@@ -5,6 +5,8 @@ class QTLog
   def initialize
   end
 
+  # Logs a message to the system console and a file
+  # if enabled in config
   def log(app, level, msg)
     strmsg = msg.to_s
     strmsg = {
@@ -14,7 +16,7 @@ class QTLog
       }[level] || strmsg.colorize(:cyan)
 
     logmsg = "[#{Time.now}] [#{app}] #{level} > #{strmsg}"
-    self.write_to_syslog(logmsg)
+    self.write_to_log(logmsg)
     puts logmsg
   end
 
@@ -34,7 +36,9 @@ class QTLog
     self.log(app, :error, msg)
   end
 
-  def write_to_syslog(msg)
+  # Creates a file using the current date and writes any log
+  # messages to it (only creates one file per day)
+  def write_to_log(msg)
     File.open("logs/log_#{Time.now.strftime('%F')}.log", 'a') { |file|
       file.puts msg
     }

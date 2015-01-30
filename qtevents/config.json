@@ -2,9 +2,10 @@
   "qtevents" : {
     "logging" : true,
     "database" : {
+      "server" : "localhost",
       "username" : "root",
       "password" : "root",
-      "dbname" : "qt"
+      "dbname" : "qtevents"
     }
   }
 }
